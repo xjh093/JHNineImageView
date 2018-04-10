@@ -33,8 +33,10 @@
 
 /// Default is 9. Minimum is 1. Maximum is 9.
 @property (nonatomic,  assign) NSInteger  maxCount;
+/// Numbers in one row. Default is 3.
+@property (nonatomic,  assign) NSInteger  rowCount;
 /// Image array on show.
-@property (nonatomic,  strong) NSArray *imageArray;
+@property (nonatomic,  strong,  readonly) NSArray *imageArray;
 /// Handle Add Image event in your VC.
 @property (nonatomic,    copy) void (^addImageBlock)(void);
 /// Delete image event, 'index' is image in 'imageArray'.
@@ -44,5 +46,8 @@
 
 /// Add a image to show.
 - (void)addImage:(UIImage *)image;
+
+/// Add image array to show. If 'flag' is YES, all images in 'imageArray' will be remove before add new images.
+- (void)addImageArray:(NSArray *)imageArray removeOldImages:(BOOL)flag;
 
 @end
