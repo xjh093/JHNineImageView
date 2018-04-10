@@ -133,7 +133,7 @@
 @end
 
 //!!!!!: JHNineImageView
-@interface JHNineImageView()<UICollectionViewDataSource,JHNineImageCollectionViewCellDelegate>
+@interface JHNineImageView()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,JHNineImageCollectionViewCellDelegate>
 @property (nonatomic,  strong) UICollectionView *collectionView;
 @property (nonatomic,  strong) NSMutableArray *dataArray;
 
@@ -152,6 +152,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _maxCount = 9;
+        _rowCount = 3;
         _dataArray = @[].mutableCopy;
         _canAddImage = YES;
         _shouldAddHolderImage = NO;
@@ -191,6 +192,22 @@
     }
     
     return cell;
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    CGFloat space = 10;
+    CGFloat W = [UIScreen mainScreen].bounds.size.width;
+    CGFloat H = (W - space - _rowCount)/_rowCount;
+    return CGSizeMake(H, H);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
+    return 0;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
+    return 0;
 }
 
 #pragma mark - JHNineImageCollectionViewCellDelegate
@@ -253,13 +270,13 @@
 {
     CGFloat space = 10;
     CGFloat W = [UIScreen mainScreen].bounds.size.width;
-    CGFloat H = (W - space)/3;
+    CGFloat H = (W - space)/_rowCount;
     CGRect frame = self.frame;
     CGRect cframe = _collectionView.frame;
     
-    if (_dataArray.count < 4) { // one row. 一行
+    if (_dataArray.count < _rowCount + 1) { // one row. 一行
         // H = (W - 4 * space)/3 + 2 * space;
-    }else if (_dataArray.count < 7){// two rows.    两行
+    }else if (_dataArray.count < _rowCount*2 + 1){// two rows.    两行
         H += H;
     }else{ // three rows.   三行
         H += 2*H;
@@ -270,7 +287,7 @@
     _collectionView.frame = cframe;
 }
 
-- (void)setImageArray:(NSArray *)imageArray{
+- (void)addImageArray:(NSArray *)imageArray removeOldImages:(BOOL)flag{
     if (_dataArray.count == _maxCount && _canAddImage == NO) {
         return;
     }
@@ -283,7 +300,12 @@
             }
         }
         if (marr.count > 0) {
-            [_dataArray removeLastObject];
+            if (flag) {
+                [_dataArray removeAllObjects];
+            }else{
+                [_dataArray removeLastObject];
+            }
+            
             [_dataArray addObjectsFromArray:marr];
             if (_dataArray.count >= _maxCount) {
                 _canAddImage = NO;
@@ -291,8 +313,6 @@
                 [_dataArray removeObjectsInRange:NSMakeRange(_maxCount, _dataArray.count-_maxCount)];
             }else if (_dataArray.count < _maxCount) {
                 [_dataArray addObject:[UIImage imageNamed:@"JHNineImageView_add"]];
-            }else{
-                
             }
             
             [self reSizeFrame];
@@ -318,21 +338,25 @@
     }
 }
 
+- (void)setRowCount:(NSInteger)rowCount{
+    if (rowCount >= 3) {
+        _rowCount = rowCount;
+        [self reSizeFrame];
+    }
+}
+
 #pragma mark - lazy
 
 - (UICollectionView *)collectionView{
     if (!_collectionView) {
         CGFloat space = 10;
         CGFloat W = [UIScreen mainScreen].bounds.size.width;
-        CGFloat H = (W - space - 3)/3;
+        CGFloat H = (W - space - _rowCount)/_rowCount;
         
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.itemSize = CGSizeMake(H, H);
-        layout.minimumLineSpacing = 0;
-        layout.minimumInteritemSpacing = 0;
-        
         UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(space, 0, W-space, H) collectionViewLayout:layout];
         collectionView.dataSource = self;
+        collectionView.delegate = self;
         collectionView.scrollEnabled = NO;
         collectionView.backgroundColor = [UIColor whiteColor];
         [collectionView registerClass:[JHNineImageCollectionViewCell class] forCellWithReuseIdentifier:@"JHNineImageCollectionViewCell_ID"];
