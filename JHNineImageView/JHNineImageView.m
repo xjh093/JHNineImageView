@@ -281,7 +281,7 @@
     }else{ // three rows.   三行
         H += 2*H;
     }
-    frame.size.height = H;
+    frame.size.height = H + 10;
     self.frame = frame;
     cframe.size.height = H;
     _collectionView.frame = cframe;
