@@ -153,6 +153,7 @@
     if (self) {
         _maxCount = 9;
         _rowCount = 3;
+        _imageCornerRadius = 0.0;
         _dataArray = @[].mutableCopy;
         _canAddImage = YES;
         _shouldAddHolderImage = NO;
