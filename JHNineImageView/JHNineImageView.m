@@ -176,6 +176,10 @@
     UIImage *image = _dataArray[indexPath.row];
     cell.imageView.image = image;
     cell.row = indexPath.row;
+    if (_imageCornerRadius > 0) {
+        cell.imageView.layer.masksToBounds = YES;
+        cell.imageView.layer.cornerRadius = _imageCornerRadius;
+    }
     
     if (indexPath.row < _dataArray.count - 1) {
         cell.addButton.hidden = YES;
