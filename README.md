@@ -4,6 +4,9 @@
 ---
 ## Log:
 
+### 2018-07-30 16:58:02
+1.add property 'imageCornerRadius'.
+
 ### 2018-04-10 17:39:19
 1.新增设置每行个数，rowCount。
 
