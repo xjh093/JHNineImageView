@@ -35,6 +35,8 @@
 @property (nonatomic,  assign) NSInteger  maxCount;
 /// Numbers in one row. Default is 3.
 @property (nonatomic,  assign) NSInteger  rowCount;
+/// Default is 0.
+@property (nonatomic,  assign) CGFloat  imageCornerRadius;
 /// Image array on show.
 @property (nonatomic,  strong,  readonly) NSArray *imageArray;
 /// Handle Add Image event in your VC.
