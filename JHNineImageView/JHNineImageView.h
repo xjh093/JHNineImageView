@@ -52,4 +52,7 @@
 /// Add image array to show. If 'flag' is YES, all images in 'imageArray' will be remove before add new images.
 - (void)addImageArray:(NSArray *)imageArray removeOldImages:(BOOL)flag;
 
+/// Replace image at index with a new image.
+- (void)replaceImageAtIndex:(NSInteger)index withImage:(UIImage *)image;
+
 @end
