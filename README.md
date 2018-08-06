@@ -4,6 +4,9 @@
 ---
 ## Log:
 
+### 2018-08-06 16:06:24
+1.add method '- (void)replaceImageAtIndex:(NSInteger)index withImage:(UIImage *)image;'
+
 ### 2018-07-30 16:58:02
 1.add property 'imageCornerRadius'.
 
