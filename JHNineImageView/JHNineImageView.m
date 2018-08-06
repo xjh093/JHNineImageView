@@ -326,6 +326,17 @@
     }
 }
 
+- (void)replaceImageAtIndex:(NSInteger)index withImage:(UIImage *)image{
+    if ([image isKindOfClass:[UIImage class]]) {
+        if (index < _dataArray.count) {
+            [_dataArray replaceObjectAtIndex:index withObject:image];
+            
+            [self reSizeFrame];
+            [_collectionView reloadData];
+        }
+    }
+}
+
 - (NSArray *)imageArray{
     NSMutableArray *marr = _dataArray.mutableCopy;
     
